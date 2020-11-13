@@ -59,7 +59,7 @@ function ChildrenNavigator() {
       <ChildrenStack.Screen
         name="ChildrenScreen"
         component={Children}
-        options={{ headerTitle: 'Tab One Title' }}
+        options={{ headerTitle: 'Children' }}
       />
     </ChildrenStack.Navigator>
   );

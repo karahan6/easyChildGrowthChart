@@ -1,22 +1,39 @@
+import { AntDesign as Icon } from "@expo/vector-icons";
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { ChildrenList } from "./ChildrenList";
 
 export default function ChildrenScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Children</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ChildrenScreen.js" />
+    <View style={styles.mainContainer}>
+      
+      <ChildrenList/>
+      <TouchableOpacity
+        style={{
+          alignSelf: 'flex-end',
+          bottom: 20,
+          right: 20,
+
+        }}
+      >
+        <Icon name="pluscircle" size={48} color="blue" />
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
