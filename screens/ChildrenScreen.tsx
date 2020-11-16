@@ -6,8 +6,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { ChildrenList } from "./ChildrenList";
+import { navigationService } from "../navigation/NavigationService";
 
-export default function ChildrenScreen() {
+const ChildrenScreen = () => {
   return (
     <View style={styles.mainContainer}>
       
@@ -17,10 +18,10 @@ export default function ChildrenScreen() {
           alignSelf: 'flex-end',
           bottom: 20,
           right: 20,
-
         }}
+        onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
       >
-        <Icon name="pluscircle" size={48} color="blue" />
+        <Icon name="pluscircle" size={48} color="#3987BF" />
       </TouchableOpacity>
     </View>
   );
@@ -47,3 +48,9 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+ChildrenScreen.navigationOptions = {
+  headerTitle: 'Children'
+};
+
+export default ChildrenScreen;

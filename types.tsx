@@ -11,6 +11,7 @@ export type BottomTabParamList = {
 
 export type ChildrenParamList = {
   ChildrenScreen: undefined;
+  ChildFormScreen: undefined;
 };
 
 export type ChartParamList = {
@@ -19,4 +20,8 @@ export type ChartParamList = {
 
 export type TableParamList = {
   TableScreen: undefined;
+};
+
+export type FAQParamList = {
+  FAQScreen: undefined;
 };
