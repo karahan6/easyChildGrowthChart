@@ -7,6 +7,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { ChildrenList } from "./ChildrenList";
 import { navigationService } from "../navigation/NavigationService";
+import {signInWithGoogle} from '../firebase/firebase.utils';
 
 const ChildrenScreen = () => {
   return (
@@ -19,7 +20,8 @@ const ChildrenScreen = () => {
           bottom: 20,
           right: 20,
         }}
-        onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
+        // onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
+        
       >
         <Icon name="pluscircle" size={48} color="#3987BF" />
       </TouchableOpacity>

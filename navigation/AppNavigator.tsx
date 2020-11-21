@@ -1,17 +1,21 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
+import * as SecureStore from 'expo-secure-store';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ChildrenScreen from '../screens/ChildrenScreen';
 import ChildFormScreen from '../screens/ChildFromScreen';
 import ChartScreen from '../screens/ChartScreen';
-import { BottomTabParamList, ChildrenParamList, ChartParamList, TableParamList, FAQParamList } from '../types';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { BottomTabParamList, ChildrenParamList, ChartParamList, TableParamList, FAQParamList, AuthParamList, AppStackParamList } from '../types';
+import { Alert, Platform, TouchableOpacity, View } from 'react-native';
 import FAQScreen from '../screens/FAQScreen';
+import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { navigationService } from './NavigationService';
 
 
 const Drawer = createDrawerNavigator();
@@ -31,15 +35,21 @@ const ChildrenStack = createStackNavigator<ChildrenParamList>();
 
 function ChildrenNavigator() {
   return (
-    <ChildrenStack.Navigator >
+    <ChildrenStack.Navigator>
       <ChildrenStack.Screen
         name="ChildrenScreen"
+
         component={ChildrenScreen}
         options={({ navigation }) => ({
           headerTitle: 'Children',
           headerLeft: () => <View style={{ marginLeft: 20 }}>
             <TouchableOpacity onPress={navigation.toggleDrawer}>
-              <Ionicons name="md-menu" size={32} color="grey" />
+              <MaterialCommunityIcons name="menu" size={32} color="grey" />
+            </TouchableOpacity>
+          </View>,
+          headerRight: () => <View style={{ marginRight: 20 }}>
+            <TouchableOpacity onPress={() => navigationService.navigate("LoginScreen", { id: 0 })}>
+              <MaterialCommunityIcons name="login" size={32} color="grey" />
             </TouchableOpacity>
           </View>
         })
@@ -48,6 +58,19 @@ function ChildrenNavigator() {
       <ChildrenStack.Screen
         name="ChildFormScreen"
         component={ChildFormScreen}
+      />
+      <ChildrenStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }
+
+        }
+      />
+      <ChildrenStack.Screen
+        name="SignupScreen"
+        component={SignupScreen}
       />
     </ChildrenStack.Navigator>
   );
@@ -91,6 +114,7 @@ function TableNavigator() {
               <Ionicons name="md-menu" size={32} color="grey" />
             </TouchableOpacity>
           </View>
+
         })
         }
       />
@@ -111,9 +135,10 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Children"
         component={ChildrenNavigator}
-        options={{
+        options={({ navigation, route }) => ({
           tabBarIcon: ({ color }) => <TabBarIcon name="child-care" color={color} />,
-        }}
+          tabBarVisible: shouldTabBarVisible(navigation),
+        })}
       />
       <BottomTab.Screen
         name="Chart"
@@ -161,3 +186,17 @@ function FAQNavigator() {
     </FAQStack.Navigator>
   );
 }
+
+
+const shouldTabBarVisible = (navigation: any) => {
+  const state = navigation.dangerouslyGetState();
+  let actualRoute = state.routes[state.index];
+
+  while (actualRoute.state) {
+    actualRoute = actualRoute.state.routes[actualRoute.state.index];
+  }
+  if (actualRoute.name === "LoginScreen") {
+    return false;
+  }
+  return true;
+};
