@@ -3,11 +3,8 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import { ChildrenList } from "./ChildrenList";
-import { navigationService } from "../navigation/NavigationService";
-import {signInWithGoogle} from '../firebase/firebase.utils';
 
 const ChildrenScreen = () => {
   return (
@@ -51,8 +48,5 @@ const styles = StyleSheet.create({
   },
 });
 
-ChildrenScreen.navigationOptions = {
-  headerTitle: 'Children'
-};
 
 export default ChildrenScreen;
