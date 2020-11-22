@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import {Text} from "../components/Themed";
+import {Text} from "../../components/Themed";
 
-export default function SignupScreen() {
+export default function ChartScreen() {
     return (
       <View style={styles.container}>
-          <Text>Signup Screen</Text>
+          <Text>Child Form Screen</Text>
       </View>
     );
   }

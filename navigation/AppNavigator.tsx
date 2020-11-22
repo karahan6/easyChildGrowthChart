@@ -3,18 +3,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import * as SecureStore from 'expo-secure-store';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ChildrenScreen from '../screens/ChildrenScreen';
-import ChildFormScreen from '../screens/ChildFromScreen';
-import ChartScreen from '../screens/ChartScreen';
+import ChildrenScreen from '../screens/Children/ChildrenScreen';
+import ChildFormScreen from '../screens/Children/ChildFromScreen';
+import ChartScreen from '../screens/Chart/ChartScreen';
 import { BottomTabParamList, ChildrenParamList, ChartParamList, TableParamList, FAQParamList, AuthParamList, AppStackParamList } from '../types';
 import { Alert, Platform, TouchableOpacity, View } from 'react-native';
 import FAQScreen from '../screens/FAQScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from '../screens/Auth/LoginScreen';
+import SignupScreen from '../screens/Auth/SignupScreen';
 import { navigationService } from './NavigationService';
 
 

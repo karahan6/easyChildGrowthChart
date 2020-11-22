@@ -1,17 +1,12 @@
-import { Button } from 'native-base';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
-import {Text} from "../components/Themed";
 
-export default function LoginScreen() {
+import {Text} from "../../components/Themed";
 
-    const save = () =>{
-      SecureStore.setItemAsync("token", "test");
-    }
+export default function SignupScreen() {
     return (
       <View style={styles.container}>
-          <Text>Login Screen</Text>
+          <Text>Signup Screen</Text>
       </View>
     );
   }

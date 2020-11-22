@@ -52,8 +52,8 @@ export const ChildrenList = () => {
                     }}
                     
                   >
-                    {child.id === 1 ? <Image  style={styles.image} source={require("../assets/images/girl.png")}/> :  
-                      <Image  style={styles.image} source={require("../assets/images/boy.png")}/>}
+                    {child.id === 1 ? <Image  style={styles.image} source={require("../../assets/images/girl.png")}/> :  
+                      <Image  style={styles.image} source={require("../../assets/images/boy.png")}/>}
                     </View>
                   <View style={{ flex: 0.8 }}>
                     <ListItem

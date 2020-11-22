@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { View } from '../components/Themed';
+import { View } from '../../components/Themed';
 import { ChildrenList } from "./ChildrenList";
 
 const ChildrenScreen = () => {

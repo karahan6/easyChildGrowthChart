@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import EditScreenInfo from '../../components/EditScreenInfo';
+import { Text, View } from '../../components/Themed';
 
-export default function TableScreen() {
+export default function ChartScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Table</Text>
+      <Text style={styles.title}>Charts</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TableScreen.js" />
+      <EditScreenInfo path="/screens/ChartScreen.js" />
     </View>
   );
 }
