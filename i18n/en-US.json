@@ -1,0 +1,16 @@
+{
+  "General.ok": "Ok",
+  "Login.welcome": "Welcome",
+  "Login.welcomeDirective": "Enter your email and password",
+  "Login.emailAddress.label": "Email Address",
+  "Login.password.label": "Password",
+  "Login.submitButton.label": "Login",
+  "Login.googleSubmitButton.label": "Google Login",
+  "Login.email.validation": "Email Address must be a valid email",
+  "Login.email.required": "Email Address is required",
+  "Login.password.atLeast3": "Password must be at least 3 characters",
+  "Login.password.required": "Password is required",
+  "Children.title": "Children",
+  "Chart.title": "Chart",
+  "Table.title": "Table"
+}

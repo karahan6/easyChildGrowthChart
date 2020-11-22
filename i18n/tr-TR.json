@@ -1,0 +1,16 @@
+{
+  "General.ok": "Tamam",
+  "Login.welcome": "Hoşgeldiniz",
+  "Login.welcomeDirective": "Email adresinizi ve şifrenizi giriniz",
+  "Login.emailAddress.label": "E-Posta Adresi",
+  "Login.password.label": "Şifre",
+  "Login.submitButton.label": "Giriş",
+  "Login.googleSubmitButton.label": "Google ile Giriş",
+  "Login.email.validation": "Geçerli bir e-posta adresi giriniz",
+  "Login.email.required": "E-posta adresi gerekli",
+  "Login.password.atLeast3": "Şifrenizin uzunluğu en az 3 olmalıdır",
+  "Login.password.required": "Şifre gereklidir",
+  "Children.title": "Çocuklar",
+  "Chart.title": "Grafik",
+  "Table.title": "Tablo"
+}
