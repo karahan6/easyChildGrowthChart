@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StoreProvider } from 'easy-peasy';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -9,11 +9,18 @@ import Navigation from './navigation';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { Startup } from './components/Startup';
+import { createDatabase } from './utils/database';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-
+  useEffect(() => {
+    initializeDB();
+    
+  },[]);
+  const initializeDB = async () => {
+    await createDatabase();
+  }
   if (!isLoadingComplete) {
     return null;
   } else {

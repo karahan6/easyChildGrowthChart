@@ -1,14 +1,17 @@
 import { IAuthStore, authStore as auth } from "../authStore";
+import { IChildStore, childStore as child } from "../childStore";
 import { ILocaleStore, localeStore as locale } from "../localeStore";
 
 export interface StoreModel {
     auth: IAuthStore,
-    locale: ILocaleStore
+    locale: ILocaleStore,
+    child: IChildStore
 }
 
 const model: StoreModel = {
     auth,
-    locale
+    locale,
+    child
 }
 
 export default model;
