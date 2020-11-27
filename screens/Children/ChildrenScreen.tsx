@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { View } from '../../components/Themed';
+import { navigationService } from "../../navigation/NavigationService";
 import { ChildrenList } from "./ChildrenList";
 
 const ChildrenScreen = () => {
@@ -17,7 +18,7 @@ const ChildrenScreen = () => {
           bottom: 20,
           right: 20,
         }}
-        // onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
+        onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
         
       >
         <Icon name="pluscircle" size={48} color="#3987BF" />
