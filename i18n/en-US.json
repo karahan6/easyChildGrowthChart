@@ -11,6 +11,16 @@
   "Login.password.atLeast3": "Password must be at least 3 characters",
   "Login.password.required": "Password is required",
   "Children.title": "Children",
+  "Child.Form.Name": "Name",
+  "Child.Form.Name.HelperText": "Please enter Name",
+  "Child.Form.Birthday": "Birthday",
+  "Child.Form.Birthday.HelperText": "Please enter Birthday",
+  "Child.Form.Gender": "Gender",
+  "Child.Form.Girl": "Girl",
+  "Child.Form.Boy": "Boy",
+  "Child.Form.Photo": "Photo",
+  "Child.Form.Note": "Note",
+  "Child.Form.Save": "Save",
   "Chart.title": "Chart",
   "Table.title": "Table"
 }

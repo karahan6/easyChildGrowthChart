@@ -1,10 +1,11 @@
 import { Gender } from "./Gender";
 
 export interface IChild{
+    id: Number;
     name: string;
     birthDay: string;
     gender: Gender;
-    notes: string;
+    note: string;
     photo: string;
     isSent: boolean;
 }

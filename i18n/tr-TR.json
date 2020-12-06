@@ -11,6 +11,16 @@
   "Login.password.atLeast3": "Şifrenizin uzunluğu en az 3 olmalıdır",
   "Login.password.required": "Şifre gereklidir",
   "Children.title": "Çocuklar",
+  "Child.Form.Name": "Adı",
+  "Child.Form.Name.HelperText": "Lütfen adını giriniz",
+  "Child.Form.Birthday": "Doğum Tarihi",
+  "Child.Form.Birthday.HelperText": "Lütfen doğum tarihini giriniz",
+  "Child.Form.Gender": "Cinsiyet",
+  "Child.Form.Girl": "Kız",
+  "Child.Form.Boy": "Erkek",
+  "Child.Form.Photo": "Fotoğraf",
+  "Child.Form.Note": "Not",
+  "Child.Form.Save": "Kayde",
   "Chart.title": "Grafik",
   "Table.title": "Tablo"
 }

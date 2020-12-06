@@ -6,10 +6,23 @@ import { IChildService } from "../../service/childService";
 export interface IChildStore {
     loading: boolean;
     childName: string;
+    children: IChild[];
+    child: IChild | null;
+    getChildren: Thunk<
+        IChildStore, 
+        void,
+        IChildService>;
+    getChild: Thunk<
+        IChildStore, 
+        Number,
+        IChildService>;
     saveChild: Thunk<
         IChildStore,
         IChild,
         IChildService
     >;
     saveSuccessful: Action<IChildStore, string>;
+    setChildren: Action<IChildStore, IChild[]>;
+    setChild: Action<IChildStore, IChild>;
+
 }

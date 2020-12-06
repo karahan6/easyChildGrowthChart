@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { AntDesign as Icon } from "@expo/vector-icons";
 import {
   ScrollView,
   StyleSheet,
@@ -13,26 +14,44 @@ import { ListItem } from "react-native-elements";
 import { useStoreActions, useStoreState } from "../../store";
 import { Avatar } from "react-native-paper";
 import { navigationService } from "../../navigation/NavigationService";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { ChildrenParamList } from "../../types";
+import { RouteProp } from "@react-navigation/native";
+import MeasurementList from "./MeasurementList";
 
+type ChildDetailScreenNavigationProp = StackNavigationProp<ChildrenParamList, 'ChildFormScreen'>;
+type ChildDetailScreenRouteProp = RouteProp<ChildrenParamList, 'ChildFormScreen'>;
 
-export const ChildrenList = () => {
-  const getChildren = useStoreActions(actions => actions.child.getChildren);
-  const children = useStoreState(state => state.child.children);
+type ChildDetailScreenProps = {
+  navigation: ChildDetailScreenNavigationProp;
+  route: ChildDetailScreenRouteProp
+};
+
+export const ChildDetailScreen= ({ navigation, route }: ChildDetailScreenProps) => {
+  const getChild = useStoreActions(actions => actions.child.getChild);
+  const child = useStoreState(state => state.child.child);
   useEffect(()=>{
-    getChildren();
-  },[]);
+    let id = route.params.id;
+    getChild(id);
+  },[route.params.id]);
 
+  useEffect(()=> {
+    if(child != null){
+        navigation.setOptions({ title: child.name });
+    }
+  }, [child])
+  var backgroundColor = child?.gender === 1 ? "#FFDFE5" : "#3987BF";
   return (
-    <Container>
-      <ScrollView contentContainerStyle={styles.list}>
+      <Container>
+      <View style={styles.mainContainer}>
         <View style={styles.container}>
-          {children.map(child => {
-            var backgroundColor = child.gender === 1 ? "#FFDFE5" : "#3987BF";
-            return (
+          {
+            
+            child &&
               <TouchableOpacity
                 key={child.birthDay?.toString() + child.name }
                 onPress={() => {
-                  navigationService.navigate("ChildDetailScreen", {id:child.id})
+                  
                 }}
               >
                 <View
@@ -51,10 +70,10 @@ export const ChildrenList = () => {
                     }}
                     
                   >
-                                  <Avatar.Image source={{uri:child.photo}} style={{marginTop: 10, marginLeft: 10, marginBottom: 10}} />
+                                  <Avatar.Image source={{uri:child.photo}} style={{marginTop: 8, marginLeft: 8, marginBottom: 8}} />
 
                     </View>
-                  <View style={{ flex: 0.8 }}>
+                  <View style={{ flex: 0.6 }}>
                     <ListItem
                       containerStyle={{ backgroundColor: backgroundColor }}
                       contentContainerStyle={{ marginLeft: 5 }}
@@ -71,21 +90,51 @@ export const ChildrenList = () => {
                       
                     />
                   </View>
+                  <View
+                            style={{justifyContent: "center", alignItems: "center", flex:0.2}}
+
+
+                  >
+                            <TouchableOpacity
+        onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
+        
+      >
+        <Icon name="edit" size={48} color="black" />
+      </TouchableOpacity>
+                    </View>
                 </View>
               </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
-    </Container>
+            
+          }
+          
+          <MeasurementList/>
+          </View>
+        <TouchableOpacity
+        style={{
+          alignSelf: 'flex-end',
+          bottom: 20,
+          right: 20,
+        }}
+        onPress={()=>navigationService.navigate("ChildFormScreen", {id:0})}
+        
+      >
+        <Icon name="pluscircle" size={48} color="#3987BF" />
+      </TouchableOpacity>
+      </View>
+      </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
+    flexDirection: 'column',
+
+  },
+  container: {
+    flex:1,
     backgroundColor: "#fff",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     margin: 15
   },
   text: {

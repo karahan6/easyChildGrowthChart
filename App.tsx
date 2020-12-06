@@ -9,7 +9,7 @@ import Navigation from './navigation';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { Startup } from './components/Startup';
-import { createDatabase } from './utils/database';
+import { createDatabase, dropTable } from './utils/database';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -19,7 +19,10 @@ export default function App() {
     
   },[]);
   const initializeDB = async () => {
-    await createDatabase();
+    //dropTable("children").then(async ()=>{ 
+      await createDatabase();
+    //});
+    
   }
   if (!isLoadingComplete) {
     return null;

@@ -16,15 +16,7 @@ export default function ChartScreen() {
   useEffect(() => {
     // Update the document title using the browser API
     var date: string = moment().format("YYYY-MM-DD");
-    var child : IChild ={
-      name: "Asım",
-      birthDay: date,
-      gender: Gender.Boy,
-      isSent: false,
-      notes: "first record",
-      photo: "test"
-    };
-    saveChild(child);
+    
   });
   return (
     <View style={styles.container}>

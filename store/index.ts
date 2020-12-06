@@ -2,7 +2,7 @@ import { createStore, createTypedHooks } from "easy-peasy";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { Injections } from "../models/Injections";
 import {login} from "../service/authService";
-import {saveChild} from "../service/childService";
+import {saveChild, getChildren, getChild} from "../service/childService";
 import model, { StoreModel } from "./model";
 
 const { useStoreActions, useStoreDispatch, useStoreState } = createTypedHooks<
@@ -13,7 +13,9 @@ export { useStoreActions, useStoreDispatch, useStoreState };
 
 const injections: Injections = {
     login,
-    saveChild
+    saveChild,
+    getChildren,
+    getChild
 };
 
 // const logger = store: => next => action => {

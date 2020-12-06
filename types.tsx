@@ -11,7 +11,8 @@ export type BottomTabParamList = {
 
 export type ChildrenParamList = {
   ChildrenScreen: undefined;
-  ChildFormScreen: undefined;
+  ChildFormScreen: {id:Number};
+  ChildDetailScreen: {id:Number};
   LoginScreen: undefined;
   SignupScreen: undefined;
 };
