@@ -16,6 +16,10 @@ export interface IChildStore {
         IChildStore, 
         Number,
         IChildService>;
+    clearChild: Thunk<
+        IChildStore, 
+        void,
+        IChildService>;
     saveChild: Thunk<
         IChildStore,
         IChild,
@@ -23,6 +27,6 @@ export interface IChildStore {
     >;
     saveSuccessful: Action<IChildStore, string>;
     setChildren: Action<IChildStore, IChild[]>;
-    setChild: Action<IChildStore, IChild>;
+    setChild: Action<IChildStore, IChild | null>;
 
 }

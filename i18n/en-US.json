@@ -20,7 +20,12 @@
   "Child.Form.Boy": "Boy",
   "Child.Form.Photo": "Photo",
   "Child.Form.Note": "Note",
-  "Child.Form.Save": "Save",
+  "Form.Save": "Save",
+  "Measurement.Form.Date": "Date",
+  "Measurement.Form.Date.HelperText": "Please enter Date",
+  "Measurement.Form.Weight": "Weight",
+  "Measurement.Form.Weight.HelperText": "Please enter Weight",
+  "Measurement.Form.Note": "Note",
   "Chart.title": "Chart",
   "Table.title": "Table"
 }

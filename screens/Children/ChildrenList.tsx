@@ -27,7 +27,7 @@ export const ChildrenList = () => {
       <ScrollView contentContainerStyle={styles.list}>
         <View style={styles.container}>
           {children.map(child => {
-            var backgroundColor = child.gender === 1 ? "#FFDFE5" : "#3987BF";
+            var backgroundColor = child.gender === 1 ? "#FFDFE5" : "#a4cce8";
             return (
               <TouchableOpacity
                 key={child.birthDay?.toString() + child.name }

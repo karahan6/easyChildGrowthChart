@@ -32,6 +32,15 @@ export const childStore = <IChildStore>({
                 .catch(err => alert(err));
         }
     ),
+    clearChild: thunk(
+        async (
+            actions,
+            _,
+            _inj
+        ) => {
+            actions.setChild(null);
+        }
+    ),
     getChildren: thunk(
         async (
             actions,

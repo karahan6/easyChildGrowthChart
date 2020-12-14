@@ -69,7 +69,7 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
     saveChild({...values, isSent:false, photo: imageUri});
     navigationService.navigate("ChildrenScreen", {});
   }
-
+  //set initial values depend on id in useeffect
   let initialValues: IChildForm = {
     name: undefined,
     birthDay: new Date(),
@@ -275,7 +275,7 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
           >
             <Button
               style={{ marginTop: 20, backgroundColor: "#119DD8" }}
-              title={formatMessage("Child.Form.Save")}
+              title={formatMessage("Form.Save")}
               onPress={formProps.handleSubmit as any}
             />
           </TouchableOpacity>

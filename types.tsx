@@ -15,6 +15,7 @@ export type ChildrenParamList = {
   ChildDetailScreen: {id:Number};
   LoginScreen: undefined;
   SignupScreen: undefined;
+  MeasurementFormScreen: {id:Number, childId:Number};
 };
 
 export type ChartParamList = {

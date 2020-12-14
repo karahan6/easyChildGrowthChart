@@ -15,6 +15,7 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import SignupScreen from '../screens/Auth/SignupScreen';
 import { navigationService } from './NavigationService';
 import { ChildDetailScreen } from '../screens/Children/ChildDetailScreen';
+import MeasurementFormScreen from '../screens/Children/MeasurementFromScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -61,6 +62,10 @@ function ChildrenNavigator() {
       <ChildrenStack.Screen
         name="ChildDetailScreen"
         component={ChildDetailScreen}
+      />
+      <ChildrenStack.Screen
+        name="MeasurementFormScreen"
+        component={MeasurementFormScreen}
       />
       <ChildrenStack.Screen
         name="LoginScreen"
