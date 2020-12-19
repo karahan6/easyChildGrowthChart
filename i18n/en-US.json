@@ -25,6 +25,10 @@
   "Measurement.Form.Date.HelperText": "Please enter Date",
   "Measurement.Form.Weight": "Weight",
   "Measurement.Form.Weight.HelperText": "Please enter Weight",
+  "Measurement.Form.Height": "Height",
+  "Measurement.Form.Height.HelperText": "Please enter Height",
+  "Measurement.Form.Head": "Head Circumference",
+  "Measurement.Form.Head.HelperText": "Please enter Head Circumference",
   "Measurement.Form.Note": "Note",
   "Chart.title": "Chart",
   "Table.title": "Table"

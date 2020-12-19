@@ -25,6 +25,10 @@
   "Measurement.Form.Date.HelperText": "Lütfen tarih giriniz",
   "Measurement.Form.Weight": "Kilo",
   "Measurement.Form.Weight.HelperText": "Lütfen kilo giriniz",
+  "Measurement.Form.Height": "Boy",
+  "Measurement.Form.Height.HelperText": "Lütfen boy giriniz",
+  "Measurement.Form.Head": "Baş Çevresi",
+  "Measurement.Form.Head.HelperText": "Lütfen baş çevresi giriniz",
   "Measurement.Form.Note": "Not",
   "Chart.title": "Grafik",
   "Table.title": "Tablo"

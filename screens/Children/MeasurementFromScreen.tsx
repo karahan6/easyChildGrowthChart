@@ -19,6 +19,7 @@ import { Camera } from 'expo-camera';
 import { Gender } from '../../models/Gender';
 import { useStoreActions, useStoreState } from '../../store';
 import { navigationService } from '../../navigation/NavigationService';
+import { IMeasurement } from '../../models/IMeasurement';
 
 
 type MeasurementFormScreenNavigationProp = StackNavigationProp<ChildrenParamList, 'MeasurementFormScreen'>;
@@ -56,13 +57,26 @@ const inputTheme = {
 const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const weightRef = useRef<any>(null);
-
-
+  const saveMeasurement = useStoreActions(actions => actions.measurement.saveMeasurement);
+  
+  
   navigation.setOptions({ title: route.params.id == 0 ? "Add Measurement" : "Edit Measurement" });
 
-  const handleSubmit = (values: any) => {
-    //saveChild({...values, isSent:false, photo: imageUri});
-    navigationService.navigate("ChildrenScreen", {});
+  const handleSubmit = (values: IMeasurementForm) => {
+    let childId = route.params.childId;
+    let measurementId = route.params.id ?? undefined;
+    let measurement: IMeasurement = {
+      id: measurementId,
+      childId: childId,
+      date: values.date.toDateString(),
+      weight: Number(values.weight),
+      height: Number(values.height),
+      head: Number(values.head),
+      note: values.note,
+      isSent: false,
+    };
+    saveMeasurement(measurement);
+    navigationService.navigate("ChildDetailScreen", {id: route.params.childId});
   }
   //set initial values depend on id in useeffect
   let initialValues: IMeasurementForm = {
@@ -81,13 +95,13 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
       weightRef.current.focus();
     formProps.setFieldValue("date", currentDate);
   };
-  const ConTwoDecDigit=(digit:string)=>{
-    return digit.indexOf(".")>0?
-            digit.split(".").length>=2?
-             digit.split(".")[0]+"."+digit.split(".")[1].substring(-1,2)
-            : digit
-           : digit
+
+  const onNumberChange = ( str: string, formProps: FormikProps<IMeasurementForm>, field: string ) => {
+    formProps.setFieldValue(field, str.replace( /^([^.]*\.)(.*)$/, function ( a, b, c ) { 
+        return b + c.replace( /\./g, '' );
+    }));
   }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -131,7 +145,7 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
             label={formatMessage("Measurement.Form.Weight")}
             value={formProps.values.weight}
              keyboardType='decimal-pad'
-            onChangeText={formProps.handleChange("weight")}
+            onChangeText={(str) => onNumberChange(str, formProps, "weight")}
             style={styles.text}
             error={
               formProps.touched.weight &&
@@ -145,6 +159,52 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
             formProps.errors.weight != null ? (
               <HelperText type="error" style={{ paddingHorizontal: 0 }}>
                 {formProps.errors.weight ? formatMessage("Measurement.Form.Weight.HelperText") : ""}
+              </HelperText>
+            ) : (
+              null
+            )}
+          
+          <TextInput
+            label={formatMessage("Measurement.Form.Height")}
+            value={formProps.values.height}
+             keyboardType='decimal-pad'
+            onChangeText={(str) => onNumberChange(str, formProps, "height")}
+            style={styles.text}
+            error={
+              formProps.touched.height &&
+              formProps.submitCount > 0 &&
+              formProps.errors.height != null
+            }
+            theme={inputTheme}
+          />
+          {formProps.touched.height &&
+            formProps.submitCount > 0 &&
+            formProps.errors.height != null ? (
+              <HelperText type="error" style={{ paddingHorizontal: 0 }}>
+                {formProps.errors.height ? formatMessage("Measurement.Form.Height.HelperText") : ""}
+              </HelperText>
+            ) : (
+              null
+            )}
+          
+          <TextInput
+            label={formatMessage("Measurement.Form.Head")}
+            value={formProps.values.head}
+             keyboardType='decimal-pad'
+            onChangeText={(str) => onNumberChange(str, formProps, "head")}
+            style={styles.text}
+            error={
+              formProps.touched.head &&
+              formProps.submitCount > 0 &&
+              formProps.errors.head != null
+            }
+            theme={inputTheme}
+          />
+          {formProps.touched.head &&
+            formProps.submitCount > 0 &&
+            formProps.errors.head != null ? (
+              <HelperText type="error" style={{ paddingHorizontal: 0 }}>
+                {formProps.errors.head ? formatMessage("Measurement.Form.Head.HelperText") : ""}
               </HelperText>
             ) : (
               null

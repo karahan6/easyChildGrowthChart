@@ -19,7 +19,7 @@ export default function App() {
     
   },[]);
   const initializeDB = async () => {
-    //dropTable("children").then(async ()=>{ 
+    //dropTable("Measurement").then(async ()=>{ 
       await createDatabase();
     //});
     

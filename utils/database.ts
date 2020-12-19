@@ -2,13 +2,14 @@ import * as SQLite from "expo-sqlite";
 import { SQLError, SQLResultSet, SQLStatementErrorCallback, SQLTransaction, SQLTransactionErrorCallback, SQLVoidCallback } from "expo-sqlite";
 import moment from "moment";
 import { IChild } from "../models/IChild";
+import { IMeasurement } from "../models/IMeasurement";
 
 const db = SQLite.openDatabase("childGrowthDb");
 
 export const createDatabase = () => {
     db.transaction(ts => {
         ts.executeSql(
-            'create table if not exists Children ' +
+            'create table if not exists Child ' +
             '( id INTEGER PRIMARY KEY, ' +
             ' name TEXT, ' +
             ' birthDay TEXT, ' +
@@ -24,10 +25,10 @@ export const createDatabase = () => {
             ' child_id INT,' +
             ' date TEXT,' +
             ' weight NUMERIC(10,2), ' +
-            ' height INT, ' +
+            ' height NUMERIC(10,2), ' +
             ' head NUMERIC(10,2), ' +
             ' notes TEXT, ' +
-            ' isSent boolean ' +
+            ' is_sent boolean ' +
             ' );'
         );
     },(error: SQLError)=>{
@@ -56,7 +57,7 @@ export const insertChild = (child: IChild): Promise<any> => {
         db.transaction(
             tx => {
                     const {name, birthDay, gender, note, photo, isSent} = child
-                    tx.executeSql("insert OR IGNORE into Children (name, birthDay, gender, note, photo, isSent) values (?,?,?,?,?,?)",
+                    tx.executeSql("insert OR IGNORE into Child (name, birthDay, gender, note, photo, isSent) values (?,?,?,?,?,?)",
                         [name, birthDay, gender, note, photo, isSent])
             },
             (error: SQLError)=>{
@@ -69,14 +70,47 @@ export const insertChild = (child: IChild): Promise<any> => {
     });
 }
 
-export async function getChildrenFromSqlite() {
-    const rows = await executeCommand("select * from Children")
+export const insertMeasurement = (measurement: IMeasurement): Promise<any> => {
+    return new Promise<any>((resolve, reject) => {
+        db.transaction(
+            tx => {
+                    const {childId, date, weight, height, head, note, isSent} = measurement
+                    tx.executeSql("insert OR IGNORE into Measurement (child_id, date, weight, height, head, note, is_sent) values (?,?,?,?,?,?)",
+                        [childId, date, weight, height, head, note, isSent])
+            },
+            (error: SQLError)=>{
+                console.log("db measurement insert error: ",    error);
+                reject(error)
+            },
+            () => {
+                resolve()
+            })
+    });
+}
+
+export async function getChildrenFromDb() {
+    const rows = await executeCommand("select * from Child")
     return rows;
 }
 
-export async function getChildFromSqlite(id: Number) {
-    const rows = await executeCommand("select * from Children where id = " + id);
+export async function getChildFromDb(id: Number) {
+    const rows = await executeCommand("select * from Child where id = " + id);
     return rows[0];
+}
+
+export async function getMeasurementsFromDb() {
+    const rows = await executeCommand("select * from Measurement")
+    return rows;
+}
+
+export async function getMeasurementFromDb(id: Number) {
+    const rows = await executeCommand("select * from Measurement where id = " + id);
+    return rows[0];
+}
+
+export async function getMeasurementsByChildIdFromDb(childId: Number) {
+    const rows = await executeCommand("select * from Measurement where child_id = " + childId);
+    return rows;
 }
 
 export function executeCommand(strSql:string, params = []): Promise<any> {

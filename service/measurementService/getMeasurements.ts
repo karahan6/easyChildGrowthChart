@@ -1,8 +1,8 @@
-import { getChildFromDb } from "../../utils/database";
+import { getMeasurementsFromDb } from "../../utils/database";
 
-export const getChild = async (id: Number) => {
+export const getMeasurements = async () => {
     return new Promise<any>((resolve, reject) => {
-        getChildFromDb(id)
+        getMeasurementsFromDb()
             .then((res)=>resolve(res))
             .catch((err)=>reject(err))
     });
