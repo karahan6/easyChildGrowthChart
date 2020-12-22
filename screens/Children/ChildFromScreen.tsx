@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
@@ -19,6 +19,8 @@ import { Camera } from 'expo-camera';
 import { Gender } from '../../models/Gender';
 import { useStoreActions, useStoreState } from '../../store';
 import { navigationService } from '../../navigation/NavigationService';
+import useChild from '../../hooks/useChild';
+import { ImageInput } from '../../components/ImageInput';
 
 
 type ChildFormScreenNavigationProp = StackNavigationProp<ChildrenParamList, 'ChildFormScreen'>;
@@ -32,7 +34,7 @@ type ChildFormScreenProps = {
 let childFormSchema = Yup.object().shape({
   name: Yup.string()
     .required("Child.Form.Name.HelperText"),
-  birthday: Yup.string()
+  birthDay: Yup.string()
     .required("Child.Form.Birthday.HelperText"),
 });
 
@@ -48,112 +50,63 @@ const inputTheme = {
   }
 };
 
+let dummyValues: IChildForm = {
+  name: undefined,
+  birthDay: new Date(),
+  note: undefined,
+  gender: Gender.Girl
+}
+
+
 const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
-  const [checked, setChecked] = useState('girl');
-  const [imageUri, setImageUri] = useState("");
+  const [initialValues, setInitialValues] = useState(dummyValues);
+  const [imageUri, setImageUri] = useState<string | null>(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const nameRef = useRef<any>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [cameraState, setCameraState] = useState({
-    hasCameraPermission: false,
-    type: Camera.Constants.Type.back
-  });
-  useEffect(()=>{
-    fetchCameraPermissionAPI();
-  },[])
+
+  let child = useChild(route.params.id);
+
+  useEffect(() => {
+    if (child != null) {
+      setInitialValues({ ...child, birthDay: new Date(child.birthDay) });
+      setImageUri(child.photo);
+    }
+    else {
+      setInitialValues(dummyValues);
+      setImageUri("");
+    }
+  }, [child])
   const saveChild = useStoreActions(actions => actions.child.saveChild);
+
 
   navigation.setOptions({ title: route.params.id == 0 ? "Add Child" : "Edit Child" });
 
   const handleSubmit = (values: any) => {
-    saveChild({...values, isSent:false, photo: imageUri});
+    saveChild({ ...values, isSent: false, photo: imageUri });
     navigationService.navigate("ChildrenScreen", {});
   }
   //set initial values depend on id in useeffect
-  let initialValues: IChildForm = {
-    name: undefined,
-    birthDay: new Date(),
-    note: undefined,
-    gender: Gender.Girl
-  }
-
-  const fetchCameraPermissionAPI = async () => {
-    const resultCamera = await Permissions.askAsync(Permissions.CAMERA);
-    const resultRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    let status =
-      resultCamera.status === resultRoll.status ? resultCamera.status : "";
-    setCameraState({
-      hasCameraPermission: status === "granted",
-      type: Camera.Constants.Type.back
-    });
-  };
-
-  const attachImage = async (uri: string) => {
-    const fileName = uri.split("/").pop() ?? "";
-    const newPath = FileSystem.documentDirectory + fileName;
-
-    try {
-      await FileSystem.moveAsync({
-        from: uri,
-        to: newPath
-      });
-      setImageUri(newPath);
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
-  };
-
-  const takeImageHandler = async () => {
-    const hasPermission = cameraState.hasCameraPermission;
-    if (!hasPermission) {
-      fetchCameraPermissionAPI();
-    }
-    const image = await ImgPicker.launchCameraAsync({
-      allowsMultipleSelection: true,
-      base64: true,
-      aspect: [16, 9],
-      quality: 0.5
-    });
-    if (!image.cancelled) {
-      await attachImage(image.uri);
-    }
-    setShowModal(false);
-  };
-
-
-  const takeGalleryHandler = async () => {
-    const hasPermission = cameraState.hasCameraPermission;
-    if (!hasPermission) {
-      fetchCameraPermissionAPI();
-    }
-    const image = await ImgPicker.launchImageLibraryAsync({
-      aspect: [16, 9],
-      quality: 0.5
-    });
-    if (!image.cancelled) {
-      await attachImage(image.uri);
-    }
-    setShowModal(false);
-  };
 
   const onDateChange = (event: Event, selectedDate: Date | undefined, formProps: FormikProps<IChildForm>) => {
-    const currentDate = selectedDate || initialValues.birthDay;
     //TODO check in IOS
     setShowDatePicker(Platform.OS === 'ios');
+    formProps.setFieldValue("birthDay", selectedDate);
     if (nameRef && nameRef.current != null)
       nameRef.current.focus();
-    formProps.setFieldValue("birthday", currentDate);
   };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={childFormSchema}
       onSubmit={handleSubmit}
+      enableReinitialize
     >
       {formProps => (
         <View style={styles.container}>
-
+          <View style={{ alignItems: "center" }}>
+            <Text>Photo</Text>
+            <ImageInput uri={imageUri} setUri={setImageUri} />
+          </View>
           <TextInput
             ref={nameRef}
             label={formatMessage("Child.Form.Name")}
@@ -226,52 +179,10 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
             style={styles.text}
             theme={inputTheme}
           />
-
-          <Text style={{ marginTop: 20 }}>Photo</Text>
-          <View style={{ width: 200 }}>
-            {imageUri != "" ? <TouchableOpacity onPress={() => setShowModal(true)}>
-              <Avatar.Image source={{uri:imageUri}} style={{marginTop: 10}} />
-              </TouchableOpacity>:<AntDesign
-              name="plussquareo"
-              size={72}
-              style={{ marginLeft: 20, marginTop: 10 }}
-              color="gray"
-              onPress={() => setShowModal(true)} />}
-          </View>
-          <Modal
-
-            visible={showModal}
-            onDismiss={() => setShowModal(false)}
-          >
-            <View
-              style={{
-                backgroundColor: 'white',
-                marginLeft: 20,
-                marginRight: 20,
-                borderRadius: 10
-              }}>
-              <View style={styles.imageOptions}>
-                <MaterialIcons name="camera-alt" size={72} color="gray" onPress={takeImageHandler} />
-                <MaterialIcons name="photo-library" size={72} color="gray" onPress={takeGalleryHandler} />
-
-              </View>
-              <TouchableOpacity
-                style={{ ...styles.button, marginRight: 10, marginLeft: 10, marginBottom: 10 }}
-                onPress={() => setShowModal(false)}
-                disabled={false}
-              >
-                <Button
-                  style={{ marginTop: 10 }}
-                  title={"Cancel"}
-                  onPress={() => setShowModal(false)}
-                />
-              </TouchableOpacity>
-            </View>
-          </Modal>
           <TouchableOpacity
             onPress={formProps.handleSubmit as any}
             disabled={false}
-            style={{ marginTop: 20}}
+            style={{ marginTop: 20 }}
           >
             <Button
               style={{ marginTop: 20, backgroundColor: "#119DD8" }}

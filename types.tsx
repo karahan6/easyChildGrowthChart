@@ -11,11 +11,11 @@ export type BottomTabParamList = {
 
 export type ChildrenParamList = {
   ChildrenScreen: undefined;
-  ChildFormScreen: {id:Number};
-  ChildDetailScreen: {id:Number};
+  ChildFormScreen: {id:number};
+  ChildDetailScreen: {id:number};
   LoginScreen: undefined;
   SignupScreen: undefined;
-  MeasurementFormScreen: {id:Number, childId:Number};
+  MeasurementFormScreen: {id:number, childId:number};
 };
 
 export type ChartParamList = {

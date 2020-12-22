@@ -18,6 +18,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ChildrenParamList } from "../../types";
 import { RouteProp } from "@react-navigation/native";
 import MeasurementList from "./MeasurementList";
+import useChild from "../../hooks/useChild";
 
 type ChildDetailScreenNavigationProp = StackNavigationProp<ChildrenParamList, 'ChildFormScreen'>;
 type ChildDetailScreenRouteProp = RouteProp<ChildrenParamList, 'ChildFormScreen'>;
@@ -28,22 +29,7 @@ type ChildDetailScreenProps = {
 };
 
 export const ChildDetailScreen = ({ navigation, route }: ChildDetailScreenProps) => {
-  const getChild = useStoreActions(actions => actions.child.getChild);
-  const clearChild = useStoreActions(actions => actions.child.clearChild);
-  const child = useStoreState(state => state.child.child);
-  useEffect(() => {
-    let id = route.params.id;
-    getChild(id);
-  }, [route.params.id]);
-
-  useEffect(() => {
-    if (child != null) {
-      navigation.setOptions({ title: child.name });
-    }
-  }, [child])
-  useMemo(() => {
-    clearChild();
-  }, [])
+  let child = useChild(route.params.id);
   var backgroundColor = child?.gender === 1 ? "#FFDFE5" : "#a4cce8";
   return (
     <Container>
@@ -85,7 +71,7 @@ export const ChildDetailScreen = ({ navigation, route }: ChildDetailScreenProps)
                 </View>
                 <View style={{ flex: 0.4, justifyContent:"center", alignItems:"center" }}>
                   <TouchableOpacity
-                    onPress={()=>navigationService.navigate("ChildFormScreen", {id:child.id})}
+                    onPress={()=>navigationService.navigate("ChildFormScreen", {id:child?.id})}
                     style={{backgroundColor: "#3987BF",
                       height:48,
                       width: 48,
