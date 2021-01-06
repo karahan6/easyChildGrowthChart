@@ -27,7 +27,7 @@ export const createDatabase = () => {
             ' weight NUMERIC(10,2), ' +
             ' height NUMERIC(10,2), ' +
             ' head NUMERIC(10,2), ' +
-            ' notes TEXT, ' +
+            ' note TEXT, ' +
             ' is_sent boolean ' +
             ' );'
         );
@@ -75,7 +75,7 @@ export const insertMeasurement = (measurement: IMeasurement): Promise<any> => {
         db.transaction(
             tx => {
                     const {childId, date, weight, height, head, note, isSent} = measurement
-                    tx.executeSql("insert OR IGNORE into Measurement (child_id, date, weight, height, head, note, is_sent) values (?,?,?,?,?,?)",
+                    tx.executeSql("insert OR IGNORE into Measurement (child_id, date, weight, height, head, note, is_sent) values (?,?,?,?,?,?,?)",
                         [childId, date, weight, height, head, note, isSent])
             },
             (error: SQLError)=>{

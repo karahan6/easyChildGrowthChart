@@ -29,6 +29,7 @@ type ChildDetailScreenProps = {
 };
 
 export const ChildDetailScreen = ({ navigation, route }: ChildDetailScreenProps) => {
+  let clearChild = useStoreActions(actions => actions.child.clearChild);
   let child = useChild(route.params.id);
   var backgroundColor = child?.gender === 1 ? "#FFDFE5" : "#a4cce8";
   return (
@@ -71,7 +72,10 @@ export const ChildDetailScreen = ({ navigation, route }: ChildDetailScreenProps)
                 </View>
                 <View style={{ flex: 0.4, justifyContent:"center", alignItems:"center" }}>
                   <TouchableOpacity
-                    onPress={()=>navigationService.navigate("ChildFormScreen", {id:child?.id})}
+                    onPress={()=>{
+                      navigationService.navigate("ChildFormScreen", {id:child?.id});
+                      
+                    }}
                     style={{backgroundColor: "#3987BF",
                       height:48,
                       width: 48,
@@ -86,8 +90,7 @@ export const ChildDetailScreen = ({ navigation, route }: ChildDetailScreenProps)
               </View>
             </View>
           }
-          <Divider ><Text>sdsds</Text></Divider>
-          <MeasurementList />
+          <MeasurementList childId={route.params.id}/>
         </View>
         <TouchableOpacity
           style={{

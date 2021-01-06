@@ -6,11 +6,6 @@ const useChild = (id: number) => {
     const clearChild = useStoreActions(actions => actions.child.clearChild);
     const child = useStoreState(state => state.child.child);
 
-    useEffect(() => {
-        if (id != 0)
-            getChild(id);
-    }, [id]);
-
     useEffect(()=>{
         if (id != 0)
             getChild(id);

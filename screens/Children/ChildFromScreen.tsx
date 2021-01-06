@@ -64,8 +64,14 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const nameRef = useRef<any>(null);
 
-  let child = useChild(route.params.id);
+  const getChild = useStoreActions(actions => actions.child.getChild);
+  const child = useStoreState(state => state.child.child);
 
+  useEffect(()=>{
+    let id = route.params.id;
+      if (id != 0)
+          getChild(id);
+  },[])
   useEffect(() => {
     if (child != null) {
       setInitialValues({ ...child, birthDay: new Date(child.birthDay) });
