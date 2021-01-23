@@ -7,7 +7,7 @@ export interface IMeasurementStore {
     measurement: IMeasurement | null;
     getMeasurementsByChildId: Thunk<
         IMeasurementStore, 
-        number,
+        Number,
         IMeasurementService>;
     getMeasurement: Thunk<
         IMeasurementStore, 
@@ -22,7 +22,7 @@ export interface IMeasurementStore {
         IMeasurement,
         IMeasurementService
     >;
-    setMeasurements: Action<IMeasurementStore, { id: number; measurements: IMeasurement []}>;
+    setMeasurements: Action<IMeasurementStore, { id: Number; measurements: IMeasurement []}>;
     setMeasurement: Action<IMeasurementStore, IMeasurement | null>;
 
 }

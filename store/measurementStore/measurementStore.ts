@@ -35,7 +35,7 @@ export const measurementStore = <IMeasurementStore>({
             { injections: { saveMeasurement } }
         ) => {
             saveMeasurement(measurement).then(() => {
-                //actions.getChildren();
+                actions.getMeasurementsByChildId(measurement.childId);
             })
                 .catch(err => alert(err));
         }

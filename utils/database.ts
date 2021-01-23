@@ -22,13 +22,13 @@ export const createDatabase = () => {
         ts.executeSql(
             'create table if not exists Measurement' +
             '( id INTEGER PRIMARY KEY,' +
-            ' child_id INT,' +
+            ' childId INT,' +
             ' date TEXT,' +
             ' weight NUMERIC(10,2), ' +
             ' height NUMERIC(10,2), ' +
             ' head NUMERIC(10,2), ' +
             ' note TEXT, ' +
-            ' is_sent boolean ' +
+            ' isSent boolean ' +
             ' );'
         );
     },(error: SQLError)=>{
@@ -75,7 +75,7 @@ export const insertMeasurement = (measurement: IMeasurement): Promise<any> => {
         db.transaction(
             tx => {
                     const {childId, date, weight, height, head, note, isSent} = measurement
-                    tx.executeSql("insert OR IGNORE into Measurement (child_id, date, weight, height, head, note, is_sent) values (?,?,?,?,?,?,?)",
+                    tx.executeSql("insert OR IGNORE into Measurement (childId, date, weight, height, head, note, isSent) values (?,?,?,?,?,?,?)",
                         [childId, date, weight, height, head, note, isSent])
             },
             (error: SQLError)=>{
@@ -109,7 +109,7 @@ export async function getMeasurementFromDb(id: Number) {
 }
 
 export async function getMeasurementsByChildIdFromDb(childId: Number) {
-    const rows = await executeCommand("select * from Measurement where child_id = " + childId);
+    const rows = await executeCommand("select * from Measurement where childId = " + childId);
     return rows;
 }
 
