@@ -44,6 +44,6 @@ export const measurementStore = <IMeasurementStore>({
         state.measurement = measurement
     }),
     setMeasurements: action((state, measurementsWithChildId) => {
-        state.measurements[measurementsWithChildId.id] = measurementsWithChildId.measurements
+        state.measurements[Number(measurementsWithChildId.id)] = measurementsWithChildId.measurements
     })
 });

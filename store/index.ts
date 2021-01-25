@@ -23,14 +23,14 @@ const injections: Injections = {
     getMeasurementsByChildId
 };
 
-// const logger = store: => next => action => {
-//     let result = next(action);
-// return result;
-// };
+ const logger = (store:any) => (next:any) => (action:any) => {
+     let result = next(action);
+ return result;
+ };
 
 const store = createStore(model, {
 injections,
-//middleware: [logger],
+middleware: [logger],
 compose: composeWithDevTools({ trace: true })
 });
 

@@ -54,11 +54,42 @@ const inputTheme = {
   }
 };
 
+let dummyValues: IMeasurementForm = {
+  date: new Date(),
+  weight: undefined,
+  height: undefined,
+  head: undefined,
+  note: undefined
+}
+
 const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps) => {
+  const [initialValues, setInitialValues] = useState(dummyValues);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const weightRef = useRef<any>(null);
   const saveMeasurement = useStoreActions(actions => actions.measurement.saveMeasurement);
   
+  const getMeasurement = useStoreActions(actions => actions.measurement.getMeasurement);
+  const measurement = useStoreState(state => state.measurement.measurement);
+
+  useEffect(()=>{
+    let id = route.params.id;
+      if (id != 0)
+          getMeasurement(id);
+  },[])
+  useEffect(() => {
+    if (measurement != null) {
+      setInitialValues({
+        date: new Date(measurement.date),
+        weight: measurement.weight.toString(),
+        height: measurement.height.toString(),
+        head: measurement.head.toString(),
+        note: measurement.note
+      });
+    }
+    else {
+      setInitialValues(dummyValues);
+    }
+  }, [measurement])
   
   navigation.setOptions({ title: route.params.id == 0 ? "Add Measurement" : "Edit Measurement" });
 
@@ -78,14 +109,6 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
     saveMeasurement(measurement);
     navigationService.navigate("ChildDetailScreen", {id: route.params.childId});
   }
-  //set initial values depend on id in useeffect
-  let initialValues: IMeasurementForm = {
-    date: new Date(),
-    weight: undefined,
-    height: undefined,
-    head: undefined,
-    note: undefined
-  }
 
   const onDateChange = (event: Event, selectedDate: Date | undefined, formProps: FormikProps<IMeasurementForm>) => {
     const currentDate = selectedDate || initialValues.date;
@@ -97,13 +120,14 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
   };
 
   const onNumberChange = ( str: string, formProps: FormikProps<IMeasurementForm>, field: string ) => {
-    formProps.setFieldValue(field, str.replace( /^([^.]*\.)(.*)$/, function ( a, b, c ) { 
+    formProps.setFieldValue(field, str.replace(/,/g, '').replace( /^([^.]*\.)(.*)$/, function ( a, b, c ) { 
         return b + c.replace( /\./g, '' );
     }));
   }
 
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={MeasurementFormSchema}
       onSubmit={handleSubmit}
@@ -144,6 +168,7 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
             ref={weightRef}
             label={formatMessage("Measurement.Form.Weight")}
             value={formProps.values.weight}
+            
              keyboardType='decimal-pad'
             onChangeText={(str) => onNumberChange(str, formProps, "weight")}
             style={styles.text}

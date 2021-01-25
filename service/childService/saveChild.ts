@@ -1,9 +1,9 @@
 import { IChild } from "../../models/IChild";
-import { insertChild } from "../../utils/database";
+import { saveChildToDB } from "../../utils/database";
 
 export const saveChild = async (child: IChild) => {
     return new Promise<any>((resolve, reject) => {
-        insertChild(child)
+        saveChildToDB(child)
             .then(()=>resolve(child))
             .catch((err)=>reject(err))
     });

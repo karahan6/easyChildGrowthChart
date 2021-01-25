@@ -31,9 +31,9 @@ export const createDatabase = () => {
             ' isSent boolean ' +
             ' );'
         );
-    },(error: SQLError)=>{
-        console.log("db create error: ",    error);
-    } );
+    }, (error: SQLError) => {
+        console.log("db create error: ", error);
+    });
 }
 
 export const dropTable = (tableName: string): Promise<any> => {
@@ -42,26 +42,8 @@ export const dropTable = (tableName: string): Promise<any> => {
             tx => {
                 tx.executeSql("drop table if exists " + tableName);
             },
-            (error: SQLError)=>{
-                console.log("db drop table error: ",    error);
-                reject(error)
-            },
-            () => {
-                resolve()
-            })
-    });
-} 
-
-export const insertChild = (child: IChild): Promise<any> => {
-    return new Promise<any>((resolve, reject) => {
-        db.transaction(
-            tx => {
-                    const {name, birthDay, gender, note, photo, isSent} = child
-                    tx.executeSql("insert OR IGNORE into Child (name, birthDay, gender, note, photo, isSent) values (?,?,?,?,?,?)",
-                        [name, birthDay, gender, note, photo, isSent])
-            },
-            (error: SQLError)=>{
-                console.log("db create error: ",    error);
+            (error: SQLError) => {
+                console.log("db drop table error: ", error);
                 reject(error)
             },
             () => {
@@ -70,16 +52,46 @@ export const insertChild = (child: IChild): Promise<any> => {
     });
 }
 
-export const insertMeasurement = (measurement: IMeasurement): Promise<any> => {
+export const saveChildToDB = (child: IChild): Promise<any> => {
     return new Promise<any>((resolve, reject) => {
         db.transaction(
             tx => {
-                    const {childId, date, weight, height, head, note, isSent} = measurement
+                const { id, name, birthDay, gender, note, photo, isSent } = child;
+                if (id) {
+                    tx.executeSql("update Child set name = ?, birthDay = ?, gender = ?, note = ?, photo = ?, isSent = ? where id = ?",
+                        [name, birthDay, gender, note, photo, isSent, id])
+                }
+                else {
+                    tx.executeSql("insert into Child (name, birthDay, gender, note, photo, isSent) values (?,?,?,?,?,?)",
+                        [name, birthDay, gender, note, photo, isSent]);
+                }
+            },
+            (error: SQLError) => {
+                console.log("db create error: ", error);
+                reject(error)
+            },
+            () => {
+                resolve()
+            })
+    });
+}
+
+export const saveMeasurementToDB = (measurement: IMeasurement): Promise<any> => {
+    return new Promise<any>((resolve, reject) => {
+        db.transaction(
+            tx => {
+                const { id, childId, date, weight, height, head, note, isSent } = measurement;
+                if (id) {
+                    tx.executeSql("update Measurement set childId = ?, date = ?, weight = ?, height = ?, head = ?, note = ?, isSent = ? where id = ?",
+                        [childId, date, weight, height, head, note, isSent, id])
+                }
+                else {
                     tx.executeSql("insert OR IGNORE into Measurement (childId, date, weight, height, head, note, isSent) values (?,?,?,?,?,?,?)",
                         [childId, date, weight, height, head, note, isSent])
+                }
             },
-            (error: SQLError)=>{
-                console.log("db measurement insert error: ",    error);
+            (error: SQLError) => {
+                console.log("db measurement insert error: ", error);
                 reject(error)
             },
             () => {
@@ -113,13 +125,13 @@ export async function getMeasurementsByChildIdFromDb(childId: Number) {
     return rows;
 }
 
-export function executeCommand(strSql:string, params = []): Promise<any> {
+export function executeCommand(strSql: string, params = []): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(strSql, params,
                 (_: SQLTransaction, resultSet: SQLResultSet) => {
                     let list = [];
-                    for(let i = 0; i < resultSet.rows.length; i++){
+                    for (let i = 0; i < resultSet.rows.length; i++) {
                         list.push(resultSet.rows.item(i));
                     }
                     resolve(list);
@@ -129,6 +141,6 @@ export function executeCommand(strSql:string, params = []): Promise<any> {
                     return false;
                 });
         })
-        ;
+            ;
     });
 }
