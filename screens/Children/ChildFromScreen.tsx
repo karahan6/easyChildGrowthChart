@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View,ScrollView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import * as ImgPicker from "expo-image-picker";
@@ -95,7 +95,7 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
 
   const onDateChange = (event: Event, selectedDate: Date | undefined, formProps: FormikProps<IChildForm>) => {
     //TODO check in IOS
-    setShowDatePicker(Platform.OS === 'ios');
+    //setShowDatePicker(Platform.OS === 'ios');
     formProps.setFieldValue("birthDay", selectedDate);
     if (nameRef && nameRef.current != null)
       nameRef.current.focus();
@@ -109,6 +109,8 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
     >
       {formProps => (
         <View style={styles.container}>
+        <ScrollView keyboardShouldPersistTaps="never" 
+        >
           <View style={{ alignItems: "center" }}>
             <Text>Photo</Text>
             <ImageInput uri={imageUri} setUri={setImageUri} />
@@ -193,9 +195,11 @@ const ChildFormScreen = ({ navigation, route }: ChildFormScreenProps) => {
             <Button
               style={{ marginTop: 20, backgroundColor: "#119DD8" }}
               title={formatMessage("Form.Save")}
+              
               onPress={formProps.handleSubmit as any}
             />
           </TouchableOpacity>
+        </ScrollView >
         </View>
       )}
     </Formik>
@@ -209,7 +213,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
-    justifyContent: "flex-start"
+    //justifyContent: "flex-start"
   },
   radioButton: {
     flexDirection: "row",

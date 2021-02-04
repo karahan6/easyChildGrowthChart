@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View,ScrollView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-
+import {Drawer} from 'antd-mobile';
 import * as ImgPicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import * as FileSystem from "expo-file-system";
@@ -113,6 +113,8 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
   const onDateChange = (event: Event, selectedDate: Date | undefined, formProps: FormikProps<IMeasurementForm>) => {
     const currentDate = selectedDate || initialValues.date;
     //TODO check in IOS
+    // if(Platform.OS === 'ios')
+    //   setShowDatePicker(false);
     setShowDatePicker(Platform.OS === 'ios');
     if (weightRef && weightRef.current != null)
       weightRef.current.focus();
@@ -134,7 +136,8 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
     >
       {formProps => (
         <View style={styles.container}>
-
+        <ScrollView keyboardShouldPersistTaps="never" 
+        >
           <TextInput
             label={formatMessage("Measurement.Form.Date")}
             value={formProps.values.date.toLocaleDateString()}
@@ -157,18 +160,26 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
             ) : (
               null
             )}
-          {showDatePicker && <DateTimePicker
+          {showDatePicker && 
+          // <Drawer open= {showDatePicker}
+          // enableDragHandle
+          // contentStyle={{ color: '#A6A6A6', textAlign: 'center', paddingTop: 42 }}
+          // >
+          <DateTimePicker
             mode="date"
             is24Hour={false}
+            
             value={formProps.values.date}
             onChange={(e, selectedDate) => onDateChange(e, selectedDate, formProps)}
-          />}
+          />
+           //</Drawer>
 
+          }
           <TextInput
             ref={weightRef}
             label={formatMessage("Measurement.Form.Weight")}
             value={formProps.values.weight}
-            
+            returnKeyType='done'
              keyboardType='decimal-pad'
             onChangeText={(str) => onNumberChange(str, formProps, "weight")}
             style={styles.text}
@@ -192,6 +203,8 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
           <TextInput
             label={formatMessage("Measurement.Form.Height")}
             value={formProps.values.height}
+            returnKeyType='done'
+
              keyboardType='decimal-pad'
             onChangeText={(str) => onNumberChange(str, formProps, "height")}
             style={styles.text}
@@ -215,6 +228,8 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
           <TextInput
             label={formatMessage("Measurement.Form.Head")}
             value={formProps.values.head}
+            returnKeyType='done'
+
              keyboardType='decimal-pad'
             onChangeText={(str) => onNumberChange(str, formProps, "head")}
             style={styles.text}
@@ -254,6 +269,7 @@ const MeasurementFormScreen = ({ navigation, route }: MeasurementFormScreenProps
               onPress={formProps.handleSubmit as any}
             />
           </TouchableOpacity>
+          </ScrollView>
         </View>
       )}
     </Formik>
